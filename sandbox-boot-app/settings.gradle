@@ -1,0 +1,4 @@
+rootProject.name = 'sandbox-boot-app'
+
+include 'configuration-client'
+include 'configuration-service'
