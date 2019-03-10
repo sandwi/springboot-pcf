@@ -1,7 +1,6 @@
 package hello;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +10,8 @@ import java.util.Iterator;
 import java.util.Properties;
 
 @Configuration
+@Slf4j
 public class ApplicationPropertiesConfig {
-    private static final Logger logger = LoggerFactory.getLogger(ApplicationPropertiesConfig.class);
 
     private Environment env;
 
@@ -28,7 +27,7 @@ public class ApplicationPropertiesConfig {
         for(Iterator it = ((AbstractEnvironment) env).getPropertySources().iterator(); it.hasNext(); ) {
             PropertySource propertySource = (PropertySource) it.next();
             if (propertySource instanceof PropertiesPropertySource) {
-                logger.info("Adding all properties contained in " + propertySource.getName());
+                log.info("Adding all properties contained in " + propertySource.getName());
                 properties.putAll(((MapPropertySource) propertySource).getSource());
             }
             if (propertySource instanceof CompositePropertySource){
@@ -42,7 +41,7 @@ public class ApplicationPropertiesConfig {
         final Properties properties = new Properties();
         compositePropertySource.getPropertySources().forEach(propertySource -> {
             if (propertySource instanceof MapPropertySource) {
-                logger.info("Adding all properties contained in " + propertySource.getName());
+                log.info("Adding all properties contained in " + propertySource.getName());
                 properties.putAll(((MapPropertySource) propertySource).getSource());
             }
             if (propertySource instanceof CompositePropertySource)
