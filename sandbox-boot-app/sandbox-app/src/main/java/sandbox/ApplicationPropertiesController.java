@@ -1,8 +1,7 @@
-package hello;
+package sandbox;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +22,7 @@ public class ApplicationPropertiesController {
     private Environment env;
     private Properties applicationProperties;
 
-    @Value("${fiserv.aperio.username:unknown}")
+    @Value("${sandbox.testProp:unknown}")
     private String testKey;
 
     @Autowired

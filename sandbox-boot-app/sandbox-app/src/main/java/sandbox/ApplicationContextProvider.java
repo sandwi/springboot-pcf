@@ -1,4 +1,4 @@
-package hello;
+package sandbox;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

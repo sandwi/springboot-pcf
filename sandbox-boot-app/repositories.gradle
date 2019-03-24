@@ -1,0 +1,11 @@
+//def mavenUser = "xxxx"
+//def mavenPass = "xxxx?"
+
+repositories {
+    mavenCentral()
+
+    maven {
+        name "Spring GA Repository"
+        url "https://repo.spring.io/libs-release"
+    }
+}
