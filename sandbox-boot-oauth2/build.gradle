@@ -1,0 +1,96 @@
+buildscript {
+    ext { springBootVersion = '2.1.3.RELEASE' }
+    repositories { mavenCentral() }
+    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+bootJar {
+    baseName = 'my-auth-server'
+    version = '0.0.1-SNAPSHOT'
+}
+
+// Boot plugin task to generate a META-INF/build-info.properties file.
+// Actuator `info` endpoint automatically publishes information about the build it finds 
+// a META-INF/build-info.properties file.
+springBoot {
+    buildInfo()
+}
+
+repositories { 
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+}
+
+ext {
+    springFrameworkVersion = '5.1.5.RELEASE'
+    springBootVersion = '2.1.3.RELEASE'
+    springSecurityVersion = '5.1.4.RELEASE'
+    springSecurityOAuth2Version = '2.3.5.RELEASE'
+    springCloudVersion = 'Greenwich.SR1'
+    springCloudServicesVersion = '2.0.1.RELEASE' // PCF Cloud Services
+}
+
+ext['spring.version']='5.1.5.RELEASE'
+ext['spring-security.version']='5.1.4.RELEASE'
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.6'
+    annotationProcessor 'org.projectlombok:lombok:1.18.6'
+
+    implementation "com.google.guava:guava:23.5-jre"
+    implementation "org.apache.httpcomponents:httpclient:4.5.6"
+
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+
+//    implementation "org.springframework:spring-core:${springFrameworkVersion}"
+//    implementation "org.springframework:spring-context:${springFrameworkVersion}"
+//    implementation "org.springframework:spring-aop:${springFrameworkVersion}"
+//    implementation "org.springframework:spring-beans:${springFrameworkVersion}"
+//    implementation "org.springframework:spring-expression:${springFrameworkVersion}"
+//    implementation "org.springframework:spring-web-mvc:${springFrameworkVersion}"
+    implementation "org.springframework.cloud:spring-cloud-starter"
+    implementation 'org.springframework.cloud:spring-cloud-config-server'
+    implementation "org.springframework.session:spring-session-jdbc:2.1.2.RELEASE"
+
+//    implementation "org.springframework.security:spring-security-core:${springSecurityVersion}"
+//    implementation "org.springframework.security:spring-security-config:${springSecurityVersion}"
+//    implementation "org.springframework.security:spring-security-web:${springSecurityVersion}"
+    implementation "org.springframework.security.oauth:spring-security-oauth2:${springSecurityOAuth2Version}"
+//    implementation "org.springframework.security:spring-security-oauth2-core:${springSecurityVersion}"
+//    implementation "org.springframework.security:spring-security-oauth2-jose:${springSecurityVersion}"
+//    implementation "org.springframework.security:spring-security-oauth2-resource-server:${springSecurityVersion}"
+//    implementation "org.springframework.security:spring-security-jwt:1.0.10.RELEASE"
+
+    implementation "mysql:mysql-connector-java"
+
+    implementation "io.springfox:springfox-swagger2:2.8.0"
+    implementation "io.springfox:springfox-swagger-ui:2.8.0"
+
+    testImplementation "junit:junit:4.12"
+    testImplementation "org.assertj:assertj-core:3.8.0"
+    testImplementation "org.mockito:mockito-core:1.10.19"
+    testImplementation "com.github.tomakehurst:wiremock:2.18.0"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+    
+    runtime "com.h2database:h2"
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:${springCloudServicesVersion}"
+    }
+}
+
