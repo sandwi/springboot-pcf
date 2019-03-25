@@ -18,6 +18,7 @@ package sandbox;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import static org.assertj.core.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -33,20 +34,20 @@ public class ConfigClientApplicationTest {
     private ConfigurableEnvironment environment;
 
     @Autowired
-    private MessageRestController controller;
+    private ApplicationPropertiesController controller;
 
     @Autowired
     private ContextRefresher refresher;
 
     @Test
     public void contextLoads() {
-        assertThat(controller.getMessage()).isNotEqualTo("Hello test");
+        assertThat(controller.getTestKeyValue()).isNotEqualTo("Hello test");
         TestPropertyValues
             .of("message:Hello test")
             .applyTo(environment);
-        assertThat(controller.getMessage()).isNotEqualTo("Hello test");
+        assertThat(controller.getTestKeyValue()).isNotEqualTo("Hello test");
         refresher.refresh();
-        assertThat(controller.getMessage()).isEqualTo("Hello test");
+        assertThat(controller.getTestKeyValue()).isEqualTo("Hello test");
     }
 
 }
