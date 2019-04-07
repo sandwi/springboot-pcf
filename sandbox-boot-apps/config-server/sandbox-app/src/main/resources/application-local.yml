@@ -1,0 +1,20 @@
+server:
+  port: 9090
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+        #include: bus-refresh, refresh, info, health, env, beans, configprops
+        #exclude:
+  security:
+    enabled: false
+
+#RabbitMQ connection details
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
