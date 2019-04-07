@@ -1,9 +1,0 @@
-.DS_Store
-.idea/
-.gradle/
-build/
-node_modules/
-*.rdb
-*.iml
-**/local.json
-**/local-*.json
