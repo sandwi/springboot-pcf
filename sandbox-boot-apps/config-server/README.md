@@ -59,7 +59,7 @@ dependencyManagement {
     // other BOMs here ...
 
 	imports {
-		mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:1.6.0.RELEASE"
+		mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:2.0.1.RELEASE"
 	}
 }
 
