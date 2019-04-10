@@ -20,8 +20,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] ACTUATOR_ENDPOINTS = {
+//            "/actuator/**"
             "/refresh",
-            "/bus-refresh"
+            "/bus-refresh",
+            "/config-value",
+            "/all-configs",
+            "/app-properties",
+            "/app-properties2"
     };
 
     @Override

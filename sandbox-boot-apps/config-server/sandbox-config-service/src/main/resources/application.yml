@@ -7,6 +7,10 @@ spring:
       server:
         git:
           uri: ${HOME}/tmp/config-git
+  security:
+    user:
+      name: user
+      password: password
 
 management:
   security:

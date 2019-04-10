@@ -1,18 +1,21 @@
 spring:
   application:
     name: sandbox-boot-app
-  cloud:
-    config:
-      uri: http://localhost:8888
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+#  cloud:
+#    config:
+#      uri: http://localhost:8888
+#      username: user
+#      password: password
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    username: guest
+#    password: guest
 
 management:
   endpoints:
     web:
+      base-path: /
       exposure:
         include: "*"
         #include: bus-refresh, refresh, info, health, env, beans, configprops
