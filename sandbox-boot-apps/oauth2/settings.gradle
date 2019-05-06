@@ -1,0 +1,5 @@
+rootProject.name = 'spring-boot2-oauth2'
+
+include 'oauth2-auth-server'
+include 'sandbox-user-service'
+

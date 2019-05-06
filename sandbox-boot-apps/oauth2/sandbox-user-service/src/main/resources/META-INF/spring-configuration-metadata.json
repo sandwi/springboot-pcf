@@ -1,0 +1,23 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "sandbox.user.service.api.config.SecurityProperties",
+      "name": "security",
+      "type": "sandbox.user.service.api.config.SecurityProperties"
+    },
+    {
+      "sourceType": "sandbox.user.service.api.config.SecurityProperties",
+      "name": "security.jwt",
+      "sourceMethod": "getJwt()",
+      "type": "sandbox.user.service.api.config.SecurityProperties$JwtProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "sandbox.user.service.api.config.SecurityProperties$JwtProperties",
+      "name": "security.jwt.public-key",
+      "type": "org.springframework.core.io.Resource"
+    }
+  ]
+}

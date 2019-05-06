@@ -1,0 +1,16 @@
+server:
+  port: 9000
+
+security:
+  jwt:
+    key-store: classpath:keystore.jks
+    key-store-password: letmein
+    key-pair-alias: mytestkey
+    key-pair-password: changeme
+
+spring:
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  liquibase:
+      changeLog: classpath:/db-changelog-master.yml

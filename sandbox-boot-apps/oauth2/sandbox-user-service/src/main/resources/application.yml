@@ -1,0 +1,13 @@
+server:
+  port: 9100
+
+security:
+  jwt:
+    public-key: classpath:public.txt
+
+spring:
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  liquibase:
+      enabled: false

@@ -1,0 +1,5 @@
+databaseChangeLog:
+- include:
+    file: schema.sql
+#- include:
+#    file: data.sql

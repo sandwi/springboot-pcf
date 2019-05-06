@@ -1,0 +1,33 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.2.RELEASE'
+        springBootOAuth2Version = '2.3.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+bootJar {
+    baseName = 'oauth2-oauth-server'
+    version = '0.0.1-SNAPSHOT'
+    mainClassName = 'sandbox.security.oauth2.OAuth2ServerApplication'
+}
+
+dependencies {
+    implementation('org.springframework.boot:spring-boot-starter-jdbc')
+
+    runtimeOnly('com.h2database:h2')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-parent:$springBootVersion"
+    }
+    dependencies {
+        dependency "org.springframework.boot:spring-boot:$springBootVersion"
+    }
+}
