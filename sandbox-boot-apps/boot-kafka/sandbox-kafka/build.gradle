@@ -1,0 +1,31 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.2.RELEASE'
+        springBootOAuth2Version = '2.3.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+bootJar {
+    baseName = 'sandbox-kafka'
+    version = '0.0.1-SNAPSHOT'
+    mainClassName = 'sandbox.kafka.KafkaApplication'
+}
+
+dependencies {
+    implementation('commons-io:commons-io:2.6')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-parent:$springBootVersion"
+    }
+    dependencies {
+        dependency "org.springframework.boot:spring-boot:$springBootVersion"
+    }
+}

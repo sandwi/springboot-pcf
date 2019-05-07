@@ -1,0 +1,24 @@
+server:
+  port: 9000
+
+spring:
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  liquibase:
+      enabled: false
+
+kafka:
+  bootstrapAddress: localhost:9092
+message:
+  topic:
+    name: sandbox
+stockTicker:
+  topic:
+    name: ticker
+filtered:
+  topic:
+    name: filtered
+partitioned:
+  topic:
+    name: partitioned

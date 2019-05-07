@@ -1,0 +1,64 @@
+buildscript {
+    ext {
+        springBootVersion = '2.1.2.RELEASE'
+        springBootOAuth2Version = '2.1.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+
+    task printVersion {
+        doLast {
+            println project.version
+        }
+    }
+}
+
+subprojects {
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'sandbox.kafka'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.6'
+    annotationProcessor 'org.projectlombok:lombok:1.18.6'
+    
+    implementation('org.springframework.boot:spring-boot-starter')
+    implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.boot:spring-boot-configuration-processor')
+    implementation('org.springframework.kafka:spring-kafka:2.2.2.RELEASE')
+    implementation('com.fasterxml.jackson.core:jackson-databind')
+
+    runtimeOnly('org.springframework.boot:spring-boot-devtools')
+    runtimeOnly('com.h2database:h2')
+    runtimeOnly('org.liquibase:liquibase-core')
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.boot:spring-boot-parent:$springBootVersion"
+    }
+    dependencies {
+        dependency "org.springframework.boot:spring-boot:$springBootVersion"
+        dependency "org.springframework.security.oauth:spring-security-oauth2:$springBootOAuth2Version"
+    }
+}
+}
