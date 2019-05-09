@@ -11,24 +11,21 @@
  - [Gradle 4.10+](https://gradle.org/)
 
 ## OAuth2 Terminology
-
-  - **Resource Owner**
-    - The user who authorizes an application to access his account. The access is limited to the `scope`.
-  - **Resource Server**:
-    -  A server that handles authenticated requests after the `client` has obtained an `access token`.
-  - **Client**
-    - An application that access protected resources on behalf of the resource owner.
-  - **Authorization Server**
-    - A server which issues access tokens after successfully authenticating a `client` and `resource owner`, and authorizing the request.
-  - **Access Token**
-    - A unique token used to access protected resources
-  - **Scope**
-    - A Permission
-  - **JWT**
-    - JSON Web Token is a method for representing claims securely between two parties as defined in [RFC 7519](https://tools.ietf.org/html/rfc7519)
-  - **Grant type**
-    - A `grant` is a method of acquiring an access token. 
-    - [Read more about grant types here](https://oauth.net/2/grant-types/)
+| Entity | Who | Role Purpose |
+| ------ | --- | ------------ |
+| Resource Owner (RO)  | The owner (user) of a resource  | The user who authorizes an application to access his account. |
+| Resource Server (RS) | Stores/Holds resources for resource owners | A server that handles authenticated requests after the `client` has obtained an `access token`. |
+| Client (C) | web service (WS), single-page app (SPA), or native app (NA) | An application that access protected resources on behalf of the resource owner |
+| Authorization Server (AS) | A server that issues access tokens to authenticated users | A server which issues access tokens after successfully authenticating a `client` and `resource owner`, and authorizing the request.
+| User-Agent (UA)	| Browser or native app | Provide UI, e.g., social button, etc., for user to interact with C
+  
+**Additional Concepts**
+  
+| Concept | Definition |
+| ------- | ---------- |
+| Scope   | A Permission |
+| JWT | JSON Web Token is a method for representing claims securely between two parties as defined in [RFC 7519(https://tools.ietf.org/html/rfc7519) |
+| Grant type | A `grant` is a method of acquiring an access token, [Read more about grant types here](https://oauth.net/2/grant-types/) |
 
 ## Implementation Overview
 This project uses [Spring Security 5](https://spring.io/projects/spring-security), [Spring Security OAuth2]() and [Spring Boot 2](https://spring.io/projects/spring-security).
