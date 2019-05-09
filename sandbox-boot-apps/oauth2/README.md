@@ -13,11 +13,11 @@
 ## OAuth2 Terminology
 | Entity | Who | Role Purpose |
 | ------ | --- | ------------ |
-| Resource Owner (RO)  | The owner (user) of a resource  | The user who authorizes an application to access his account. |
-| Resource Server (RS) | Stores/Holds resources for resource owners | A server that handles authenticated requests after the `client` has obtained an `access token`. |
-| Client (C) | web service (WS), single-page app (SPA), or native app (NA) | An application that access protected resources on behalf of the resource owner |
-| Authorization Server (AS) | A server that issues access tokens to authenticated users | A server which issues access tokens after successfully authenticating a `client` and `resource owner`, and authorizing the request.
-| User-Agent (UA)	| Browser or native app | Provide UI, e.g., social button, etc., for user to interact with C
+| Resource Owner (RO)  | The owner (user) of a `resource`  | The user who authorizes an application to access his account |
+| Resource Server (RS) | Stores/Holds resources for `resource owner` | A server that handles authenticated requests after the `client` has obtained an `access token` |
+| Client (C) | web service (WS), single-page app (SPA), or native app (NA) | An application that access protected resources on behalf of the `resource owner` |
+| Authorization Server (AS) | A server that issues `access tokens` to authenticated users | A server which issues access tokens after successfully authenticating a `client` and authorizing the request |
+| User-Agent (UA)	| Browser, native app, other HTTP Clients | Provide UI for user to interact with clients (C) |
   
 **Additional Concepts**
   
