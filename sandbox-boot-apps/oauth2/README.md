@@ -1,7 +1,7 @@
 # Spring Security OAuth2 Authorization and Spring Boot 2
 
 
->If you're not familiar with OAuth2 I recommend this [read](https://www.oauth.com/).
+> [OAuth2 info](https://www.oauth.com/).
 
 ## Pre-req
  
