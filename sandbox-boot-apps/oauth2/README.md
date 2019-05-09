@@ -2,6 +2,7 @@
 
 
 > To learn about OAuth2, read [OAuth2](https://oauth.net/2/) or Okta Sponsored [OAuth](https://www.oauth.com/) site.
+> Good set of diagrams: [Diagrams And Movies Of All The OAuth 2.0 Flows](https://medium.com/@darutk/diagrams-and-movies-of-all-the-oauth-2-0-flows-194f3c3ade85)
 
 ## Pre-req
  
