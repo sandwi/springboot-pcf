@@ -1,7 +1,7 @@
 # Spring Security OAuth2 Authorization and Spring Boot 2
 
 
-> [OAuth2 info](https://www.oauth.com/).
+> To learn about OAuth2, read [OAuth2](https://oauth.net/2/) or Okta Sponsored [OAuth](https://www.oauth.com/) site.
 
 ## Pre-req
  
