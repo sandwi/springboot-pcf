@@ -1,4 +1,4 @@
-package sandbox.redis;
+package sandbox.redis.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.EnableCaching;

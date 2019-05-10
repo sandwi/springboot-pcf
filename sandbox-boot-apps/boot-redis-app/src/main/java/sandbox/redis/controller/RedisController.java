@@ -1,4 +1,4 @@
-package sandbox.redis;
+package sandbox.redis.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import sandbox.redis.model.StockPrice;
+import sandbox.redis.service.StockTickerService;
 
 @RestController
 @Slf4j

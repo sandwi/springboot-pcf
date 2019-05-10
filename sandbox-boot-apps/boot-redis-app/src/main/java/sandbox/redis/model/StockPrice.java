@@ -1,4 +1,4 @@
-package sandbox.redis;
+package sandbox.redis.model;
 
 import lombok.Data;
 

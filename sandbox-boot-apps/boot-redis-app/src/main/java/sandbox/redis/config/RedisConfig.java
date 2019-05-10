@@ -1,4 +1,4 @@
-package sandbox.redis;
+package sandbox.redis.config;
 
 
 import org.springframework.cache.CacheManager;

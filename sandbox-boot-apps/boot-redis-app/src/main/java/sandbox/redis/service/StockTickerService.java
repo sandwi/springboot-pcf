@@ -1,16 +1,15 @@
-package sandbox.redis;
+package sandbox.redis.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.cache.annotation.EnableCaching;
+import sandbox.redis.model.StockPrice;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-public class StockTickerService {
+public class StockTickerService implements IStockTickerService {
 
     private Map<String, Double> stockPrices = Map.of(
             "AAPL", 200.72,
@@ -20,12 +19,14 @@ public class StockTickerService {
 
     public StockTickerService()  {}
 
+    @Override
     @Cacheable(value= "stockTickerCache", key= "#stockTicker", unless = "#result == null")
     public Double getStockPrice(String stockTicker) {
         log.info("getStockPrice(), ticker: " + stockTicker + ", Price: " + stockPrices.get(stockTicker));
         return stockPrices.get(stockTicker);
     }
 
+    @Override
     @Caching(
             put= { @CachePut(value= "stockTickerCache", key= "#ticker") }
     )
