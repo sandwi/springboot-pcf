@@ -1,0 +1,7 @@
+server:
+  port: 9080
+redis:
+  hostname: localhost
+  port: 6379
+  connectionTimeout: 30000
+  readTimeout: 30000
