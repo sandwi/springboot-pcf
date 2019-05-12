@@ -1,7 +1,6 @@
-server:
-  port: 9000
-
 spring:
+  main:
+    web-application-type: none
   jackson:
     serialization:
       INDENT_OUTPUT: true
@@ -15,7 +14,7 @@ message:
     name: sandbox
 stockTicker:
   topic:
-    name: ticker
+    name: stockTicker
 filtered:
   topic:
     name: filtered

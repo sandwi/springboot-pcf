@@ -17,10 +17,10 @@ public class KafkaTopicConfig {
     private String bootstrapAddress;
 
     @Value(value = "${message.topic.name}")
-    private String topicName;
+    private String sandboxTopicName;
 
     @Value(value = "${partitioned.topic.name}")
-    private String partionedTopicName;
+    private String partitionedTopicName;
 
     @Value(value = "${filtered.topic.name}")
     private String filteredTopicName;
@@ -37,12 +37,17 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic messageTopic() {
-        return new NewTopic(topicName, 1, (short) 1);
+        return new NewTopic(sandboxTopicName, 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic stockTickerTopic() {
+        return new NewTopic(stockTickerTopicName, 1, (short) 1);
     }
 
     @Bean
     public NewTopic partionedTopic() {
-        return new NewTopic(partionedTopicName, 6, (short) 1);
+        return new NewTopic(partitionedTopicName, 6, (short) 1);
     }
 
     @Bean
@@ -50,8 +55,4 @@ public class KafkaTopicConfig {
         return new NewTopic(filteredTopicName, 1, (short) 1);
     }
 
-    @Bean
-    public NewTopic stockTickerTopic() {
-        return new NewTopic(stockTickerTopicName, 1, (short) 1);
-    }
 }

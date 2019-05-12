@@ -1,6 +1,8 @@
 package sandbox.kafka;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -8,19 +10,30 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
-public class KafkaApplication {
+@Slf4j
+public class KafkaApplication implements CommandLineRunner {
 
     @Autowired
-    private static MessageProducer producer;
+    private MessageProducer producer;
     @Autowired
-    private static MessageListener listener;
+    private MessageListener listener;
 
     public static void main(String... args) {
+        log.info("STARTING THE APPLICATION");
+        ConfigurableApplicationContext context = SpringApplication.run(KafkaApplication.class, args);
+        context.close();
+        log.info("APPLICATION FINISHED");
+    }
+
+    @Override
+    public void run(String... args) {
+        log.info("EXECUTING : command line runner");
+
+        for (int i = 0; i < args.length; ++i) {
+            log.info("args[{}]: {}", i, args[i]);
+        }
 
         try {
-            ConfigurableApplicationContext context = SpringApplication.run(KafkaApplication.class, args);
-
-
             producer.sendMessage("Hello, World!");
             listener.wait(10, TimeUnit.SECONDS);
 
@@ -28,10 +41,10 @@ public class KafkaApplication {
              * Sending message to a topic with 5 partition,
              * each message to a different partition. But as per
              * listener configuration, only the messages from
-             * partition 0 and 3 will be consumed.
+             * partition 0, 2 and 4 will be consumed.
              */
             for (int i = 0; i < 5; i++) {
-                producer.sendMessageToPartion("Hello To Partioned Topic!", i);
+                producer.sendMessageToPartition("Hello To Partitioned Topic!", i);
             }
             listener.partitionTopicWait(10, TimeUnit.SECONDS);
 
@@ -40,14 +53,14 @@ public class KafkaApplication {
              * configuration,  all messages with char sequence
              * 'World' will be discarded.
              */
-            producer.sendMessageToFiltered("Hello Baeldung!");
+            producer.sendMessageToFiltered("Hello Sandbox!");
             producer.sendMessageToFiltered("Hello World!");
             listener.filterTopicWait(10, TimeUnit.SECONDS);
 
             /*
-             * Sending message to 'greeting' topic. This will send
-             * and recieved a java object with the help of
-             * greetingKafkaListenerContainerFactory.
+             * Sending message to 'stockTicker' topic. This will send
+             * and receive a java object with the help of
+             * stockTickerKafkaListenerContainerFactory.
              */
             StockTicker ticker = new StockTicker();
             ticker.setTicker("AAPL");
@@ -55,10 +68,8 @@ public class KafkaApplication {
             producer.sendStockTickerMessage(ticker);
             listener.stockTickerWait(10, TimeUnit.SECONDS);
 
-            context.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
