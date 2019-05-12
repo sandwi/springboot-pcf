@@ -6,6 +6,9 @@ spring:
       INDENT_OUTPUT: true
   liquibase:
       enabled: false
+  kafka:
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 kafka:
   bootstrapAddress: localhost:9092
@@ -15,6 +18,7 @@ message:
 stockTicker:
   topic:
     name: stockTicker
+    dlt: stockTicker.deadLetterTopic
 filtered:
   topic:
     name: filtered

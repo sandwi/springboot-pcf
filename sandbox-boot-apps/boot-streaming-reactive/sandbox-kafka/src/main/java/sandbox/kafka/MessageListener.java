@@ -71,8 +71,8 @@ public class MessageListener {
         this.filterLatch.countDown();
     }
 
-    @KafkaListener(topics = "${stockTicker.topic.name}", containerFactory = "stockTickerKafkaListenerContainerFactory",
-            errorHandler = "stockTickerErrorHandler")
+    @KafkaListener(topics = "${stockTicker.topic.name}", containerFactory = "stockTickerKafkaListenerContainerFactory")
+//            errorHandler = "stockTickerErrorHandler")
     public void stockTickerListener(StockTicker stockTicker) {
         log.info("Received stockTicker: " + stockTicker);
         this.stockTickerLatch.countDown();

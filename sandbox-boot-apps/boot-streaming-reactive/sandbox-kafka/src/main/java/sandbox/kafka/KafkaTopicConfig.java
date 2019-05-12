@@ -28,6 +28,9 @@ public class KafkaTopicConfig {
     @Value(value = "${stockTicker.topic.name}")
     private String stockTickerTopicName;
 
+    @Value(value = "${stockTicker.topic.dlt}")
+    private String stockTickerDeadLetterTopic;
+
     @Bean
     public KafkaAdmin kafkaAdmin() {
         Map<String, Object> configs = new HashMap<>();
@@ -43,6 +46,11 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic stockTickerTopic() {
         return new NewTopic(stockTickerTopicName, 1, (short) 1);
+    }
+
+    @Bean
+    public NewTopic stockTickerDeadLetterTopic() {
+        return new NewTopic(stockTickerDeadLetterTopic, 1, (short) 1);
     }
 
     @Bean
