@@ -2,7 +2,7 @@
 
 Cloud-Native apps should follow 12 factor application architecture principles and externalizing configuration is one of them. More information on 12 factors is available at https://12factor.net/config.
 
-Configurations for multiple apps/environments can be kept in a single Git repository and Pivotal CF's config-server service can be spun to serve configurations bcked by a git repository. Upon application push, PCF injects the location of a configured config-server in the environment and the spring-boot app contacts the config-server to pickup its own configurations.
+Configurations for multiple apps/environments can be kept in a single Git repository and [Pivotal CF's config-server](https://docs.pivotal.io/spring-cloud-services/2-0/common/config-server/index.html) service can be used to serve configurations backed by a [git repository](https://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_git_backend). When an application is deployed (cf push) or restaged or restarted, Cloud Foundry injects the location of a configured config-server in the environment and the spring-boot app contacts the config-server to pickup its own configurations. PCF Config Server also support [Hashicorp Vault](https://www.vaultproject.io/) for secrets management, see [PCF Config Server support for Vault](https://docs.pivotal.io/spring-cloud-services/2-0/common/config-server/configuring-with-vault.html) for more details.
 
 ## Details
 
