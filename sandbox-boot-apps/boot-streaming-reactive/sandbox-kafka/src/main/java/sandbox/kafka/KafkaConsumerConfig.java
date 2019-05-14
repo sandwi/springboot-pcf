@@ -10,6 +10,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.serialization.BytesDeserializer;
 import org.apache.kafka.common.serialization.BytesSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -24,6 +25,8 @@ import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.*;
 import org.springframework.kafka.support.converter.RecordMessageConverter;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
+import org.springframework.kafka.support.serializer.DeserializationException;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 @EnableKafka
@@ -80,13 +83,23 @@ public class KafkaConsumerConfig {
         return factory;
     }
 
+    //@Bean
     public ConsumerFactory<String, StockTicker> stockTickerConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        props.put(ConsumerConfig.GROUP_ID_CONFIG, "stockTicker");
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(StockTicker.class));
+        Map<String, Object> consumerProps = new HashMap<>();
+        consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+//        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
+        consumerProps.put(ErrorHandlingDeserializer2.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
+
+//        consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
+        consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
+        consumerProps.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
+        consumerProps.put(ErrorHandlingDeserializer2.VALUE_FUNCTION, FailedStockTickerProvider.class);
+        consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "sandbox.kafka.StockTicker");
+        consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "sandbox.kafka");
+
+        consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "stockTicker");
+        return new DefaultKafkaConsumerFactory<>(consumerProps);
     }
 
     @Bean
@@ -97,26 +110,18 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(stockTickerConsumerFactory());
 //        factory.setErrorHandler(new SeekToCurrentErrorHandler(
 //                new DeadLetterPublishingRecoverer(dltKafkaTemplate), 3)); // dead-letter after 3 tries
-        factory.setErrorHandler(new ErrorHandler() {
-            @Override
-            public void handle(Exception thrownException, List<ConsumerRecord<?, ?>> records, Consumer<?, ?> consumer, MessageListenerContainer container) {
-                String s = thrownException.getMessage().split("Error deserializing key/value for partition ")[1].split(". If needed, please seek past the record to continue consumption.")[0];
-                String topics = s.split("-")[0];
-                int offset = Integer.valueOf(s.split("offset ")[1]);
-                int partition = Integer.valueOf(s.split("-")[1].split(" at")[0]);
 
-                TopicPartition topicPartition = new TopicPartition(topics, partition);
-                log.info("Skipping stockTicker -" + partition + " offset " + offset);
-                consumer.seek(topicPartition, offset + 1);
-                log.info("## Exiting ErrorHandler().");
+        factory.setErrorHandler((t, r) -> {
+            if (r.value() == null && t.getCause() instanceof DeserializationException) {
+                DeserializationException de = (DeserializationException) t.getCause();
+                Headers headers = de.getHeaders();
+                log.info("Headers: " + headers);
+                log.info("Data: " + new String(de.getData()));
             }
-
-            @Override
-            public void handle(Exception e, ConsumerRecord<?, ?> consumerRecord) {
-                log.info("Exception: " + e.getMessage());
-                e.printStackTrace();
+            else if (r.key() == null && t.getCause() instanceof DeserializationException) {
+                DeserializationException de = (DeserializationException) t.getCause();
+                log.info("Keys: " + de.getMessage());
             }
-
         });
         return factory;
     }
@@ -136,24 +141,7 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public KafkaTemplate<Object, Object> dltKafkaTemplate() {
-        return new KafkaTemplate<>(dltProducerFactory());
+    public KafkaTemplate<Object, Object> dltKafkaTemplate(ProducerFactory<Object, Object> dltProducerFactory) {
+        return new KafkaTemplate<>(dltProducerFactory);
     }
-
-    @Bean
-    public SeekToCurrentErrorHandler stockTickerErrorHandler() {
-        return new SeekToCurrentErrorHandler((record, exception) -> {
-            // recover after 3 failures - e.g. send to a dead-letter topic
-            log.info("StockTicker Record: " + record);
-            log.info("Exception: " + exception.getMessage());
-        }, 3);
-    }
-
-//    @Bean
-//    public RemainingRecordsErrorHandler stockTickerRemainingRecordsErrorHandler() {
-//    return new RemainingRecordsErrorHandler ((e, recordList, consumer) -> {
-//
-//            });
-//    }
-
 }
