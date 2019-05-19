@@ -1,0 +1,9 @@
+spring:
+  profiles:
+     active: local
+amazon:
+   dynamodb:
+     accesskey: ${AWS_ACCESS_KEY_ID}
+     secretkey: ${AWS_SECRET_KEY}
+     endpoint: http://localhost:8500
+     region: us-east-1
