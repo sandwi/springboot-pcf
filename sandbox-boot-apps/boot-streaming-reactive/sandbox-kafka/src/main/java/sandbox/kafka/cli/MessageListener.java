@@ -1,10 +1,8 @@
-package sandbox.kafka;
+package sandbox.kafka.cli;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.annotation.TopicPartition;
-import org.springframework.kafka.listener.RemainingRecordsErrorHandler;
-import org.springframework.kafka.listener.SeekToCurrentErrorHandler;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;

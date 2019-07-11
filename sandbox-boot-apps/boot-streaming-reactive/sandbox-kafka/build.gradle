@@ -14,7 +14,8 @@ buildscript {
 bootJar {
     baseName = 'sandbox-kafka'
     version = '0.0.1-SNAPSHOT'
-    mainClassName = 'sandbox.kafka.KafkaApplication'
+//    mainClassName = 'sandbox.kafka.cli.KafkaApplication'
+    mainClassName = 'sandbox.kafka.helloworld.KafkaApplication'
 }
 
 dependencies {

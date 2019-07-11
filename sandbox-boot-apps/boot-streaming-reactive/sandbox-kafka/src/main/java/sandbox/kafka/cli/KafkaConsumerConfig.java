@@ -1,30 +1,20 @@
-package sandbox.kafka;
+package sandbox.kafka.cli;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.header.Headers;
-import org.apache.kafka.common.serialization.BytesDeserializer;
 import org.apache.kafka.common.serialization.BytesSerializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.kafka.ConcurrentKafkaListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
-import org.springframework.kafka.listener.*;
-import org.springframework.kafka.support.converter.RecordMessageConverter;
-import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.serializer.DeserializationException;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer2;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
@@ -93,7 +83,7 @@ public class KafkaConsumerConfig {
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
         consumerProps.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
         consumerProps.put(ErrorHandlingDeserializer2.VALUE_FUNCTION, FailedStockTickerProvider.class);
-        consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "sandbox.kafka.StockTicker");
+        consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "sandbox.kafka.cli.StockTicker");
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "sandbox.kafka");
 
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "stockTicker");

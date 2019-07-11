@@ -1,4 +1,4 @@
-package sandbox.kafka;
+package sandbox.kafka.cli;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

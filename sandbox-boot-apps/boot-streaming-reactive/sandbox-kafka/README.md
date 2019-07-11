@@ -18,33 +18,79 @@ After cloning this repo:
 cd boot-streaming-reactive
 gradle clean build
 ```
+There are mutliple boot applications:
+1. HelloWorld: Simplest possible boot-kafka app, runs with default servlet container.
+1. CLI Java App: A boot CLI boot kafka app, runs as Java CLI app.
+
+By default helloworld version is started.
+
+### Build HelloWorld
+
+This is the default, no changes are required to build/run this version. 
+
+### Build CLI App
+
+1. Modify build.gradle, to change Spring Boot main class, uncomment CLI main class and comment out helloworld main class:
+```bash
+    mainClassName = 'sandbox.kafka.cli.KafkaApplication'
+//    mainClassName = 'sandbox.kafka.helloworld.KafkaApplication'
+
+```
+ 
 
 ## Run Boot Kafka App
+Assuming Kafka has been started.
+
+### HelloWorld version
+
+In a new terminal shell, start the Spring Boot app:
 ```bash
 cd boot-kafka
-java -jar build/libs/sandbox-kafka-0.0.1-SNAPSHOT.jar
+java -jar build/libs/sandbox-kafka-0.0.1-SNAPSHOT.jar --spring.config.name=application-hw
 ```
+
+This will start Spring Boot App on port 9000. This version exposes REST endpoint to which you can post messages.
+In another new terminal shell, post message using curl:
+
+```bash
+curl -X POST -F 'message={"ticker":AAPL, "price":21}' http://localhost:9000/kafka/publish
+```
+
+The out in the terminal where Spring Boot Application is running should look like:
+```bash
+19:48:38.982 [http-nio-9000-exec-2] INFO  sandbox.kafka.helloworld.Producer - #### -> Producing message -> {"ticker":AAPL, "price":21"
+19:48:38.986 [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  sandbox.kafka.helloworld.Consumer - #### -> Consumed message -> {"ticker":AAPL, "price":21}
+```
+
+### CLI App Version
+In a new terminal shell, start the Spring Boot app:
+```bash
+cd boot-kafka
+java -jar build/libs/sandbox-kafka-0.0.1-SNAPSHOT.jar --spring.config.name=application-cli
+```
+
+This will start and run the Spring Boot App to completion.
 
 **Check the output from the app:**  
 
 ```bash
-[main] INFO  sandbox.kafka.KafkaApplication - Started KafkaApplication in 2.15 seconds (JVM running for 2.803)
-[org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  sandbox.kafka.MessageListener - Received message in group 'bar': Hello, World!
-[org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  sandbox.kafka.MessageListener - Received message in group 'bar': Hello, World!
-[main] INFO  sandbox.kafka.KafkaApplication - EXECUTING : command line runner
+[main] INFO  sandbox.kafka.cli.KafkaApplication - Started KafkaApplication in 2.15 seconds (JVM running for 2.803)
+[org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received message in group 'bar': Hello, World!
+[org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received message in group 'bar': Hello, World!
+[main] INFO  sandbox.kafka.cli.KafkaApplication - EXECUTING : command line runner
 
-org.springframework.kafka.KafkaListenerEndpointContainer#4-0-C-1] INFO  sandbox.kafka.MessageListener - Received message in filtered listener: Hello Sandbox!
+org.springframework.kafka.KafkaListenerEndpointContainer#4-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received message in filtered listener: Hello Sandbox!
 
-[org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  sandbox.kafka.MessageListener - Received message in group 'foo': Hello, World!
-[org.springframework.kafka.KafkaListenerEndpointContainer#2-0-C-1] INFO  sandbox.kafka.MessageListener - Received: Hello, World! from partition: 0
-[org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  sandbox.kafka.MessageListener - Received message in group 'bar': Hello, World!
-[kafka-producer-network-thread | producer-1] INFO  sandbox.kafka.MessageProducer - Sent message=[Hello, World!] with offset=[14]
-[org.springframework.kafka.KafkaListenerEndpointContainer#3-0-C-1] INFO  sandbox.kafka.MessageListener - Received: Hello To Partitioned Topic! from partition: 2
+[org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received message in group 'foo': Hello, World!
+[org.springframework.kafka.KafkaListenerEndpointContainer#2-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received: Hello, World! from partition: 0
+[org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received message in group 'bar': Hello, World!
+[kafka-producer-network-thread | producer-1] INFO  sandbox.kafka.cli.MessageProducer - Sent message=[Hello, World!] with offset=[14]
+[org.springframework.kafka.KafkaListenerEndpointContainer#3-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received: Hello To Partitioned Topic! from partition: 2
 
-[org.springframework.kafka.KafkaListenerEndpointContainer#4-0-C-1] INFO  sandbox.kafka.MessageListener - Received message in filtered listener: Hello Sandbox!
-[org.springframework.kafka.KafkaListenerEndpointContainer#3-0-C-1] INFO  sandbox.kafka.MessageListener - Received: Hello To Partitioned Topic! from partition: 4
-[org.springframework.kafka.KafkaListenerEndpointContainer#3-0-C-1] INFO  sandbox.kafka.MessageListener - Received: Hello To Partitioned Topic! from partition: 0
+[org.springframework.kafka.KafkaListenerEndpointContainer#4-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received message in filtered listener: Hello Sandbox!
+[org.springframework.kafka.KafkaListenerEndpointContainer#3-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received: Hello To Partitioned Topic! from partition: 4
+[org.springframework.kafka.KafkaListenerEndpointContainer#3-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received: Hello To Partitioned Topic! from partition: 0
 
 org.springframework.kafka.KafkaListenerEndpointContainer#5-0-C-1] INFO  o.s.k.l.KafkaMessageListenerContainer - partitions assigned: [stockTicker-0]
-[org.springframework.kafka.KafkaListenerEndpointContainer#5-0-C-1] INFO  sandbox.kafka.MessageListener - Received stockTicker: StockTicker(ticker=AAPL, price=120.12)
+[org.springframework.kafka.KafkaListenerEndpointContainer#5-0-C-1] INFO  sandbox.kafka.cli.MessageListener - Received stockTicker: StockTicker(ticker=AAPL, price=120.12)
 ```
