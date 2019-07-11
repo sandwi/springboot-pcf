@@ -13,11 +13,8 @@ Use [quick start guide](https://kafka.apache.org/quickstart) to install kafka.
    bin/kafka-server-start.sh config/server.properties
 
 ## Build code
-After cloning this repo:  
-```bash
-cd boot-streaming-reactive
-gradle clean build
-```
+After cloning this repo, build the app. Gradle is used for builds, hence gradle should be intalled on your machine.
+
 There are mutliple boot applications:
 1. HelloWorld: Simplest possible boot-kafka app, runs with default servlet container.
 1. CLI Java App: A boot CLI boot kafka app, runs as Java CLI app.
@@ -27,6 +24,11 @@ By default helloworld version is started.
 ### Build HelloWorld
 
 This is the default, no changes are required to build/run this version. 
+ 
+```bash
+cd boot-streaming-reactive
+gradle clean build
+```
 
 ### Build CLI App
 
@@ -37,6 +39,10 @@ This is the default, no changes are required to build/run this version.
 
 ```
  
+```bash
+cd boot-streaming-reactive
+gradle clean build
+``` 
 
 ## Run Boot Kafka App
 Assuming Kafka has been started.
@@ -69,7 +75,7 @@ cd boot-kafka
 java -jar build/libs/sandbox-kafka-0.0.1-SNAPSHOT.jar --spring.config.name=application-cli
 ```
 
-This will start and run the Spring Boot App to completion.
+Spring Boot App will start and run to completion.
 
 **Check the output from the app:**  
 
