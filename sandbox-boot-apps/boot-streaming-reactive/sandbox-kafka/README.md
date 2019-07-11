@@ -33,6 +33,11 @@ gradle clean build
 ### Build CLI App
 
 1. Modify build.gradle, to change Spring Boot main class, uncomment CLI main class and comment out helloworld main class:
+
+```bash
+cd boot-streaming-reactive
+```
+Use any editor to modify build.gradle (e.g. vi):
 ```bash
     mainClassName = 'sandbox.kafka.cli.KafkaApplication'
 //    mainClassName = 'sandbox.kafka.helloworld.KafkaApplication'
@@ -40,7 +45,6 @@ gradle clean build
 ```
  
 ```bash
-cd boot-streaming-reactive
 gradle clean build
 ``` 
 
