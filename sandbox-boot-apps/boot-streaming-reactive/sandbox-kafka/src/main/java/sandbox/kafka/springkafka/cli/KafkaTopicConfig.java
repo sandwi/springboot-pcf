@@ -1,4 +1,4 @@
-package sandbox.kafka.cli;
+package sandbox.kafka.springkafka.cli;
 
 import java.util.HashMap;
 import java.util.Map;

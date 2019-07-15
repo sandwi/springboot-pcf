@@ -1,4 +1,4 @@
-package sandbox.kafka.cli;
+package sandbox.kafka.springkafka.cli;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package sandbox.kafka.cli;
+package sandbox.kafka.springkafka.cli;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

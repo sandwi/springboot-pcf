@@ -1,4 +1,4 @@
-package sandbox.kafka.cli;
+package sandbox.kafka.springkafka.cli;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +83,7 @@ public class KafkaConsumerConfig {
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer2.class);
         consumerProps.put(ErrorHandlingDeserializer2.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class);
         consumerProps.put(ErrorHandlingDeserializer2.VALUE_FUNCTION, FailedStockTickerProvider.class);
-        consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "sandbox.kafka.cli.StockTicker");
+        consumerProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "StockTicker");
         consumerProps.put(JsonDeserializer.TRUSTED_PACKAGES, "sandbox.kafka");
 
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "stockTicker");

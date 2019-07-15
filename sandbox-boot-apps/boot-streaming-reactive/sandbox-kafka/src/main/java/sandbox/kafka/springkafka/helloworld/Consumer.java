@@ -1,4 +1,4 @@
-package sandbox.kafka.helloworld;
+package sandbox.kafka.springkafka.helloworld;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

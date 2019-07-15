@@ -1,4 +1,4 @@
-package sandbox.kafka.helloworld;
+package sandbox.kafka.springkafka.helloworld;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

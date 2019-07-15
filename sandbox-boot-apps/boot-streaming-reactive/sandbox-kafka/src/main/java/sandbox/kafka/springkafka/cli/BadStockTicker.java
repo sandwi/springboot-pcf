@@ -1,4 +1,4 @@
-package sandbox.kafka.cli;
+package sandbox.kafka.springkafka.cli;
 
 public class BadStockTicker extends StockTicker {
     private final byte[] badMessage;
