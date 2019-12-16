@@ -75,20 +75,20 @@ public class JsonLoggingWrapper {
      * @deprecated
      */
     @Deprecated
-    public void logRedacted(Object obj, String url, String type, JsonContentMasker masker) {
-        logRedacted(obj, Collections.emptyMap(), url, type, masker);
+    public void logMasked(Object obj, String url, String type, JsonContentMasker masker) {
+        logMasked(obj, Collections.emptyMap(), url, type, masker);
     }
 
-    public void logRedacted(Object obj, Map<String, String> headers, String url, String type, JsonContentMasker masker) {
+    public void logMasked(Object obj, Map<String, String> headers, String url, String type, JsonContentMasker masker) {
 
         ObjectNode loggingNode = mapper.createObjectNode();
         loggingNode.put("url", url);
         loggingNode.put("type", type);
 
         try {
-            String redactedJson = masker.mask(mapper.writeValueAsString(obj));
-            JsonNode redactedNode = mapper.readTree(redactedJson);
-            loggingNode.set("content", redactedNode);
+            String maskedJson = masker.mask(mapper.writeValueAsString(obj));
+            JsonNode node = mapper.readTree(maskedJson);
+            loggingNode.set("content", node);
             logger.info(loggingNode.toString());
         } catch (IOException e) {
             logger.debug(e.getMessage(), e);
@@ -119,7 +119,7 @@ public class JsonLoggingWrapper {
     /**
      * Masks the given object and then logs it
      *
-     * @param data the String we want to redact and log
+     * @param data the String we want to mask and log
      * @param url  the URL associated with this log message (we will mostly be logging some kind of SOAP HTTP request/response)
      * @param type the type of object (like 'request' or 'response')
      */
@@ -146,7 +146,7 @@ public class JsonLoggingWrapper {
             data = maskAccountNumber(doc, data);
             data = maskSSN(doc, data);
             data = maskPassword(doc, data);
-            data = redactPayload(data);
+            data = maskPayload(data);
 
             this.log(data, url, type, headers);
 
@@ -163,14 +163,14 @@ public class JsonLoggingWrapper {
     }
 
     private String maskAccountNumber(Document doc, String obj) {
-        AccountNumberMaskingFunction accountNumberRedactionFunction = new AccountNumberMaskingFunction();
+        AccountNumberMaskingFunction anMaskingFunction = new AccountNumberMaskingFunction();
         List<String> accountNumberTags = Stream.of(soapAccountAttributeNames.split(","))
                 .map(String::trim)
                 .collect(Collectors.toList());
         for (String accountNumberTag : accountNumberTags) {
             NodeList nodeList = doc.getDocumentElement().getElementsByTagNameNS("*", accountNumberTag);
             if (nodeList.getLength() > 0) {
-                obj = redact(accountNumberRedactionFunction, doc, obj, accountNumberTag);
+                obj = mask(anMaskingFunction, doc, obj, accountNumberTag);
             }
         }
         return obj;
@@ -178,14 +178,14 @@ public class JsonLoggingWrapper {
     }
 
     private String maskSSN(Document doc, String obj) {
-        SSNMaskingFunction ssnRedactionFunction = new SSNMaskingFunction();
+        SSNMaskingFunction ssnMaskingFunction = new SSNMaskingFunction();
         List<String> ssnTags = Stream.of(soapSSNAttributeNames.split(","))
                 .map(String::trim)
                 .collect(Collectors.toList());
         for (String ssnTag : ssnTags) {
             NodeList nodeList = doc.getDocumentElement().getElementsByTagNameNS("*", ssnTag);
             if (nodeList.getLength() > 0) {
-                obj = redact(ssnRedactionFunction, doc, obj, ssnTag);
+                obj = mask(ssnMaskingFunction, doc, obj, ssnTag);
             }
         }
         return obj;
@@ -218,10 +218,10 @@ public class JsonLoggingWrapper {
         return obj;
     }
 
-    private String redact(Function redactFunction, Document doc, String obj, String redact) {
+    private String mask(Function maskingFunction, Document doc, String obj, String redact) {
         NodeList nodeList = doc.getDocumentElement().getElementsByTagNameNS("*", redact);
         String tag;
-        String redactedTag;
+        String maskedTag;
         for (int i = 0; i < nodeList.getLength(); i++) {
             if (nodeList.item(i).getFirstChild() != null) {
                 tag =
@@ -229,13 +229,13 @@ public class JsonLoggingWrapper {
                                 nodeList.item(i).getFirstChild().getNodeValue()
                 ;
 
-                redactedTag =
+                maskedTag =
                         "<" + ((nodeList.item(i).getPrefix() == null) ? "" : nodeList.item(i).getPrefix() + ":") + redact + ">" +
-                                redactFunction.apply(nodeList.item(i).getFirstChild().getNodeValue())
+                                maskingFunction.apply(nodeList.item(i).getFirstChild().getNodeValue())
                 ;
 
                 //updates the stringResponse with the redacted tag
-                obj = obj.replace(tag, redactedTag);
+                obj = obj.replace(tag, maskedTag);
 
             }
         }
@@ -243,8 +243,8 @@ public class JsonLoggingWrapper {
     }
 
 
-    /*Redact the SSOLogin Payload*/
-    private String redactPayload(String data) {
+    /*Mask the login Payload*/
+    private String maskPayload(String data) {
         StringBuffer payload = new StringBuffer(data);
 
         List<String> tokens = new ArrayList<String>();
