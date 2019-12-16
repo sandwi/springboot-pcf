@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  * Both pattern and mask value can be configured in the logback.xml
  * E.g. Sensitive data like emails will be masked to * in the logs.
  * Logback layout:
- * <layout class="services.utils.MaskingPatternLayout">
+ * <layout class="commons.securelogging.logback.MaskingPatternLayout">
  * <mask>*</mask>
  * <patternsProperty>^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$</patternsProperty>
  * <pattern>%d [%thread] %-5level %logger{35} - %msg%n</pattern>
